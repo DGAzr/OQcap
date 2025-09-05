@@ -1,0 +1,20 @@
+[package]
+name = "oqcap"
+version = "0.1.0"
+edition = "2021"
+description = "Minimal Wayland quick capture tool for Obsidian"
+authors = ["Your Name <your.email@example.com>"]
+
+[dependencies]
+gtk4 = "0.8"
+libadwaita = "0.6"
+url = "2.5"
+tokio = { version = "1.0", features = ["process"] }
+serde = { version = "1.0", features = ["derive"] }
+toml = "0.8"
+dirs = "5.0"
+urlencoding = "2.1"
+
+[[bin]]
+name = "oqcap"
+path = "src/main.rs"

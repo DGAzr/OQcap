@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=OQcap
+Comment=Quick text capture for Obsidian
+Exec=oqcap
+Icon=text-editor
+Terminal=false
+Categories=Utility;TextEditor;
+Keywords=obsidian;notes;capture;quick;
+StartupNotify=true
