@@ -20,31 +20,69 @@ fn main() -> glib::ExitCode {
         Config::default()
     });
 
-    app.connect_activate(move |app| build_ui(app, config.clone()));
+    app.connect_activate(move |app| {
+        // Load custom CSS for glass effect after GTK is initialized
+        let provider = gtk4::CssProvider::new();
+        provider.load_from_data(include_str!("style.css"));
+        
+        // Apply CSS to default display
+        if let Some(display) = gtk4::gdk::Display::default() {
+            gtk4::style_context_add_provider_for_display(
+                &display,
+                &provider,
+                gtk4::STYLE_PROVIDER_PRIORITY_APPLICATION,
+            );
+        }
+        
+        build_ui(app, config.clone())
+    });
+    
     app.run()
 }
 
 fn build_ui(app: &AdwApplication, config: Config) {
-    // Create the main window
+    // Create the main window with glass styling
     let window = AdwApplicationWindow::builder()
         .application(app)
         .title("Quick Capture")
-        .default_width(400)
-        .default_height(300)
         .resizable(true)
         .build();
+    
+    // Calculate responsive window size (50% width, 10% height, centered)
+    if let Some(display) = gtk4::gdk::Display::default() {
+        if let Some(monitor) = display.monitors().item(0) {
+            if let Some(monitor) = monitor.downcast_ref::<gtk4::gdk::Monitor>() {
+                let geometry = monitor.geometry();
+                let width = (geometry.width() as f64 * 0.5) as i32;
+                let height = (geometry.height() as f64 * 0.1) as i32;
+                
+                // Set minimum size for usability
+                let min_width = 400.max(width);
+                let min_height = 120.max(height);
+                
+                window.set_default_size(min_width, min_height);
+                
+                // Note: Window centering on Wayland is handled by the compositor
+                // and cannot be controlled programmatically for security reasons
+            }
+        }
+    }
+    
+    // Add glass window styling
+    window.add_css_class("glass-window");
 
 
 
 
-    // Create main content box
+    // Create main content box with glass styling (smaller margins for compact window)
     let content_box = Box::new(gtk4::Orientation::Vertical, 12);
-    content_box.set_margin_top(12);
-    content_box.set_margin_bottom(12);
-    content_box.set_margin_start(12);
-    content_box.set_margin_end(12);
+    content_box.set_margin_top(16);
+    content_box.set_margin_bottom(16);
+    content_box.set_margin_start(20);
+    content_box.set_margin_end(20);
+    content_box.add_css_class("glass-content");
 
-    // Create text view for input
+    // Create text view for input with glass styling
     let text_buffer = TextBuffer::new(None::<&gtk4::TextTagTable>);
     let text_view = TextView::builder()
         .buffer(&text_buffer)
@@ -52,17 +90,18 @@ fn build_ui(app: &AdwApplication, config: Config) {
         .accepts_tab(false)
         .build();
 
-    // TextView doesn't have placeholder text, so we'll add a subtle hint
+    // Add glass styling to text view
+    text_view.add_css_class("glass-textview");
     text_view.set_monospace(false);
 
     // Create a placeholder label that disappears when user types
     let placeholder_label = gtk4::Label::builder()
         .label("Enter your text here...")
-        .css_classes(vec!["dim-label".to_string()])
+        .css_classes(vec!["glass-placeholder".to_string()])
         .halign(gtk4::Align::Start)
         .valign(gtk4::Align::Start)
-        .margin_top(8)
-        .margin_start(8)
+        .margin_top(12)
+        .margin_start(12)
         .build();
 
     // Create overlay to show placeholder over text view
@@ -82,19 +121,23 @@ fn build_ui(app: &AdwApplication, config: Config) {
         .child(&overlay)
         .hscrollbar_policy(gtk4::PolicyType::Never)
         .vscrollbar_policy(gtk4::PolicyType::Automatic)
-        .has_frame(true)
+        .has_frame(false) // Remove default frame for glass effect
         .vexpand(true)
         .build();
+    
+    // Add glass styling to scrolled window
+    scrolled_window.add_css_class("glass-scrolled");
 
-    // Create submit button
+    // Create submit button with glass styling
     let submit_button = Button::builder()
         .label("Send to Obsidian")
-        .css_classes(vec!["suggested-action".to_string()])
+        .css_classes(vec!["glass-button".to_string(), "suggested-action".to_string()])
         .build();
 
     // Create button box for proper alignment
     let button_box = Box::new(gtk4::Orientation::Horizontal, 6);
     button_box.set_halign(gtk4::Align::End);
+    button_box.add_css_class("glass-button-box");
     button_box.append(&submit_button);
 
     // Add widgets to content box

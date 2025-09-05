@@ -2,19 +2,27 @@
 
 A minimal, native Wayland application for quickly capturing text and sending it to Obsidian. Built with Rust and GTK4 for seamless integration with modern Linux desktop environments.
 
+I made this for myself to help reduce the friction of capturing my random thoughts and tasks. I doubt this will really be useful to anyone else, but who knows!
+
 ## Features
 
-- **Native Wayland support** with GTK4 and libadwaita
-- **Minimal floating window** that matches your system theme
-- **Configurable Obsidian integration** with support for:
-  - Custom vaults
-  - Folders and templates
-  - Plugin integration
-  - Custom URL parameters
-- **Keyboard shortcuts**: Ctrl+Enter to submit, Escape to close, Ctrl+, for settings
+
+- **Minimal floating window** Appears, takes your text, gets out of your way
+- **Configurable Obsidian integration** 
+- **Keyboard shortcuts**: Ctrl+Enter to submit, Escape to close
 - **Auto-close** after sending text to Obsidian
 
+## Screenshots
+Input Window
+![A screenshot of the OQCap Input Box](/resources/OQCap-Capture.png?raw=true "OQCap Input Box")
+
+Sample Note in Obsidian
+![A screenshot of the note created](/resources/OQCap-Note.png?raw=true "OQCap Example Output")
+
 ## Prerequisites
+You kind of need Obsidian to be installed an operational for this to be of any use.
+
+Also, a Linux desktop environment is needed. I've only tested it with recent versions of GNOME and Plasma, but I think it will work anywhere as long as you have the build dependancies installed.
 
 ### System Dependencies
 
