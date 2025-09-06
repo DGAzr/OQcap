@@ -22,7 +22,7 @@ Sample Note in Obsidian
 ## Prerequisites
 You kind of need Obsidian to be installed an operational for this to be of any use.
 
-Also, a Linux desktop environment is needed. I've only tested it with recent versions of GNOME and Plasma, but I think it will work anywhere as long as you have the build dependancies installed.
+Also, a Linux desktop environment is needed. I've only tested it with recent versions of GNOME and Plasma, but I think it will work anywhere as long as you have the build dependencies installed.
 
 ### System Dependencies
 
